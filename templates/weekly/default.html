@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Music</h2>
+
+<ul>
+  {% for album in albums %}
+  <li>
+    <a href="{{ album.link }}" title="Review">{{ album.title }}</a> - {{ album.date|date:"m-d-Y"}})
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

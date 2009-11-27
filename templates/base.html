@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+  <title>{% block title %}Entertain{% endblock %}</title>
+  {% block imports %}{% endblock %}
+</head>
+<body>
+
+  <h1><a href="/">Entertain</a></h1>
+  The latest in entertainment.
+  <hr />
+
+  {% block content %}
+  {% endblock %}
+
+  <div id="footer">
+    {% block footer %}
+      <hr />
+      <p>&copy; Samuel Fortier Galarneau {% now "Y" %}</p>
+    {% endblock %}
+  </div>
+
+</body>
+</html>

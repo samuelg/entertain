@@ -19,7 +19,7 @@ def __cleaned(album):
         Cleans the albums data and returns a dictionary in the form {title, link, date}
     """
     link =  album.find('feedburner:origlink').string
-    title = " ".join(map(lambda x: x.strip(), album.title.string.split('-')))
+    title = " - ".join(map(lambda x: x.strip(), album.title.string.split('-')))
     date = datetime.datetime.strptime(album.pubdate.string[5:16], '%d %b %Y')
     
     return {'title': title, 'link': link, 'date': date}
