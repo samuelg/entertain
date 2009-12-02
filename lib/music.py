@@ -20,7 +20,7 @@ def __cleaned(album):
     """
     link =  album.find('feedburner:origlink').string
     title = " - ".join(map(lambda x: x.strip(), album.title.string.split('-')))
-    date = datetime.datetime.strptime(album.pubdate.string[5:16], '%d %b %Y')
+    date = datetime.datetime.strptime(album.pubdate.string[5:16].strip(), '%d %b %Y')
     
     return {'title': title, 'link': link, 'date': date}
 

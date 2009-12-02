@@ -7,7 +7,17 @@
 <ul>
   {% for album in albums %}
   <li>
-    <a href="{{ album.link }}" title="Review">{{ album.title }}</a> - {{ album.date|date:"m-d-Y"}})
+    <a href="{{ album.link }}" title="Review">{{ album.title }}</a> - {{ album.date|date:"m-d-Y"}}
+  </li>
+  {% endfor %}
+</ul>
+
+<h2>Xbox 360 Games</h2>
+
+<ul>
+  {% for game in x360_games %}
+  <li>
+    <a href="{{ game.link }}" title="Review">{{ game.title }}</a> - {{ game.date|date:"m-d-Y"}}
   </li>
   {% endfor %}
 </ul>

@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from lib import music
+from lib import games
 
 class WeeklyTest(TestCase):
     """
@@ -14,6 +15,7 @@ class WeeklyTest(TestCase):
         response = self.client.get(reverse('weekly_default'))
         self.assertEquals(response.status_code, 200)
         self.assertTrue(response.context[-1]['albums'])
+        self.assertTrue(response.context[-1]['x360_games'])
 
     def test_music(self):
         """
@@ -22,4 +24,12 @@ class WeeklyTest(TestCase):
         albums = music.parse_music()
         self.assertTrue(albums)
         self.assertEquals(10, len(albums))
+
+    def test_games(self):
+        """
+            Tests the games library.
+        """
+        x360_games = games.parse_games()
+        self.assertTrue(x360_games)
+        self.assertEquals(10, len(x360_games))
 
