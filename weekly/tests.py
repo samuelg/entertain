@@ -24,6 +24,9 @@ class WeeklyTest(TestCase):
         albums = music.parse_music()
         self.assertTrue(albums)
         self.assertEquals(10, len(albums))
+        self.assertTrue(albums[0]['title'])
+        self.assertTrue(albums[0]['link'])
+        self.assertTrue(albums[0]['date'])
 
     def test_games(self):
         """
@@ -32,4 +35,7 @@ class WeeklyTest(TestCase):
         x360_games = games.parse_games()
         self.assertTrue(x360_games)
         self.assertEquals(10, len(x360_games))
+        self.assertTrue(x360_games[0]['title'])
+        self.assertTrue(x360_games[0]['link'])
+        self.assertTrue(x360_games[0]['date'])
 
