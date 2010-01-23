@@ -1,25 +1,43 @@
 {% extends "base.html" %}
 
+{% block javascript %}
+<script type="text/javascript">
+  function fetchMedium(medium) {
+    // define all urls
+    var urls = {"music": "{% url weekly_music %}", "games": "{% url weekly_games %}"};
+
+    $.getJSON(urls[medium], function (data) {
+      var new_row = '<ul>';
+
+      $.each(data, function () {
+        new_row += '<li>';
+        new_row += '<a href="' + this.link + '" title="Review">' + this.title + '</a> - ' + this.date;
+        new_row += '</li>';
+      });
+
+      new_row += '</ul>';
+      $("#" + medium).append(new_row);
+      $("#" + medium).show("slow");
+    });
+  }
+
+  $(document).ready(function () {
+    fetchMedium('music');
+    fetchMedium('games');
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 
 <h2>Music</h2>
 
-<ul>
-  {% for album in albums %}
-  <li>
-    <a href="{{ album.link }}" title="Review">{{ album.title }}</a> - {{ album.date|date:"m-d-Y"}}
-  </li>
-  {% endfor %}
-</ul>
+<div id="music" style="display: none;">
+</div>
 
 <h2>Xbox 360 Games</h2>
 
-<ul>
-  {% for game in x360_games %}
-  <li>
-    <a href="{{ game.link }}" title="Review">{{ game.title }}</a> - {{ game.date|date:"m-d-Y"}}
-  </li>
-  {% endfor %}
-</ul>
+<div id="games" style="display: none;">
+</div>
 
 {% endblock %}

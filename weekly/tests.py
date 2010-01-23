@@ -14,8 +14,7 @@ class WeeklyTest(TestCase):
         """
         response = self.client.get(reverse('weekly_default'))
         self.assertEquals(response.status_code, 200)
-        self.assertTrue(response.context[-1]['albums'])
-        self.assertTrue(response.context[-1]['x360_games'])
+        # self.assertTrue(response.context[-1]['x360_games'])
 
     def test_music(self):
         """

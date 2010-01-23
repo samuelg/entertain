@@ -9,10 +9,8 @@ def default(request):
     """
         Displays lists of entertainment by medium
     """
-    albums = music.parse_music()
-    x360_games = games.parse_games()
 
-    return render_to_response('weekly/default.html', {'albums': albums, 'x360_games': x360_games})
+    return render_to_response('weekly/default.html')
 
 def latest_music(request):
     """
