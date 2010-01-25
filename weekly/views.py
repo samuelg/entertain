@@ -23,5 +23,5 @@ def latest_games(request):
     """
         Returns JSON serialization of the latest games 
     """
-    x360_games = games.parse_games(json=True)
-    return HttpResponse(simplejson.dumps(x360_games))
+    all_games = games.parse_games(json=True)
+    return HttpResponse(simplejson.dumps(all_games))

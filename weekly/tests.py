@@ -31,10 +31,10 @@ class WeeklyTest(TestCase):
         """
             Tests the games library.
         """
-        x360_games = games.parse_games()
-        self.assertTrue(x360_games)
-        self.assertEquals(10, len(x360_games))
-        self.assertTrue(x360_games[0]['title'])
-        self.assertTrue(x360_games[0]['link'])
-        self.assertTrue(x360_games[0]['date'])
+        all_games = games.parse_games()
+        self.assertTrue(all_games)
+        self.assertEquals(30, len(all_games))
+        self.assertTrue(all_games[0]['title'])
+        self.assertTrue(all_games[0]['link'])
+        self.assertTrue(all_games[0]['date'])
 

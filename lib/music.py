@@ -23,7 +23,7 @@ def __cleaned(album, json):
 
     # convert date to timestamp
     if json:
-        date = date.strftime('%a, %d %b %Y %H:%M:%S %Z')
+        date = date.strftime('%a, %d %b %Y')
 
     return {'title': title, 'link': link, 'date': date}
 

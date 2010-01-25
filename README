@@ -1,3 +1,8 @@
 Lists current entertaiment by medium.
 
 Plans to include, music, movies, shows, games, and books.
+
+DEPENDENCIES
+
+  Redis - http://code.google.com/p/redis/
+  Feedparser - http://www.feedparser.org/
