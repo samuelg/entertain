@@ -2,6 +2,9 @@ Lists current entertaiment by medium.
 
 Plans to include, music, movies, shows, games, and books.
 
+Control what displays on the page by changing the following in settings.py
+  SYSTEMS - a tuple that can contain xbox, wii, ds, ps3, and pc
+
 DEPENDENCIES
 
   Redis - http://code.google.com/p/redis/
