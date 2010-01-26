@@ -14,7 +14,7 @@ class WeeklyTest(TestCase):
         """
         response = self.client.get(reverse('weekly_default'))
         self.assertEquals(response.status_code, 200)
-        # self.assertTrue(response.context[-1]['x360_games'])
+        self.assertTrue(response.context['systems'])
 
     def test_music(self):
         """
@@ -31,10 +31,13 @@ class WeeklyTest(TestCase):
         """
             Tests the games library.
         """
-        all_games = games.parse_games()
-        self.assertTrue(all_games)
-        self.assertEquals(30, len(all_games))
-        self.assertTrue(all_games[0]['title'])
-        self.assertTrue(all_games[0]['link'])
-        self.assertTrue(all_games[0]['date'])
+        systems = ('xbox', 'wii', 'ds', 'ps3', 'pc')
+
+        for system in systems:
+            game_results = games.parse_games(system)
+            self.assertTrue(game_results)
+            self.assertEquals(10, len(game_results))
+            self.assertTrue(game_results[0]['title'])
+            self.assertTrue(game_results[0]['link'])
+            self.assertTrue(game_results[0]['date'])
 

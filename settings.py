@@ -1,6 +1,9 @@
 # Django settings for entertain project.
 import os
 
+# list of game systems to display games for
+SYSTEMS = ('xbox', 'wii', 'ds', 'ps3', 'pc')
+
 PROJECT_DIR = os.path.dirname(__file__)
 
 DEBUG = True

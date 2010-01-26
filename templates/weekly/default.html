@@ -2,11 +2,16 @@
 
 {% block javascript %}
 <script type="text/javascript">
-  function fetchMedium(medium) {
+  function fetchMedium(medium, cat) {
+    cat = cat || '';
     // define all urls
-    var urls = {"music": "{% url weekly_music %}", "games": "{% url weekly_games %}"};
+    var urls = {"music": "{% url weekly_music %}"};
+    {% for system in systems %} 
+      urls["games{{ system }}"] = "{% url weekly_games category=system %}";
+    {% endfor %}
+    
 
-    $.getJSON(urls[medium], function (data) {
+    $.getJSON(urls[medium + cat], function (data) {
       var new_row = '<ul>';
 
       $.each(data, function () {
@@ -16,14 +21,23 @@
       });
 
       new_row += '</ul>';
-      $("#" + medium).append(new_row);
-      $("#" + medium).show("slow");
+      $("#" + medium + cat).append(new_row);
+      $("#" + medium + cat).show("slow");
     });
   }
 
   $(document).ready(function () {
+    // define all game systems
+    var systems = [];
+    {% for system in systems %} 
+      systems.push("{{ system }}");
+    {% endfor %}
+    
     fetchMedium('music');
-    fetchMedium('games');
+
+    $.each(systems, function () {
+      fetchMedium('games', this);
+    });
   });
 </script>
 {% endblock %}
@@ -35,9 +49,29 @@
 <div id="music" style="display: none;">
 </div>
 
-<h2>Games</h2>
+<h2>Xbox 360 Games</h2>
 
-<div id="games" style="display: none;">
+<div id="gamesxbox" style="display: none;">
+</div>
+
+<h2>Wii Games</h2>
+
+<div id="gameswii" style="display: none;">
+</div>
+
+<h2>DS Games</h2>
+
+<div id="gamesds" style="display: none;">
+</div>
+
+<h2>PS3 Games</h2>
+
+<div id="gamesps3" style="display: none;">
+</div>
+
+<h2>PC Games</h2>
+
+<div id="gamespc" style="display: none;">
 </div>
 
 {% endblock %}

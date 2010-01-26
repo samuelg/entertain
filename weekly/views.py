@@ -4,13 +4,13 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson
+from settings import SYSTEMS
 
 def default(request):
     """
         Displays lists of entertainment by medium
     """
-
-    return render_to_response('weekly/default.html')
+    return render_to_response('weekly/default.html', {'systems': SYSTEMS})
 
 def latest_music(request):
     """
@@ -19,9 +19,10 @@ def latest_music(request):
     albums = music.parse_music(json=True)
     return HttpResponse(simplejson.dumps(albums))
 
-def latest_games(request):
+def latest_games(request, category='xbox'):
     """
         Returns JSON serialization of the latest games 
     """
-    all_games = games.parse_games(json=True)
-    return HttpResponse(simplejson.dumps(all_games))
+    game_results = games.parse_games(category, json=True)
+    return HttpResponse(simplejson.dumps(game_results))
+

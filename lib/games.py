@@ -2,25 +2,22 @@ import datetime
 import feedparser
 
 BASE_GAMES_URL = 'http://www.metacritic.com/rss/games/'
-SYSTEMS = ( 'xbox360.xml',
-            'wii.xml',
-            'ds.xml'
-          )
+SYSTEMS = { 'xbox': 'xbox360.xml',
+            'wii': 'wii.xml',
+            'ds': 'ds.xml',
+            'ps3': 'ps3.xml',
+            'pc': 'pc.xml'
+          }
 
-def parse_games(json=False):
+def parse_games(game_system='xbox', json=False):
     """ Parses the lastest 10 xbox 360, wii, and DS games from metacritic and returns a dictionary
         in the form {title, link, date}
 
         Pass json=True to get games in JSON format.
     """
 
-    results = []
-    content = map(lambda x: feedparser.parse('%s%s' % (BASE_GAMES_URL, x)).entries[:10], SYSTEMS)
-    for game_system in content:
-        for game in game_system:
-            results.append(__cleaned(game, json))
-
-    return results
+    content = feedparser.parse('%s%s' % (BASE_GAMES_URL, SYSTEMS[game_system])).entries[:10]
+    return [__cleaned(game, json) for game in content]
 
 def __cleaned(game, json):
     """
