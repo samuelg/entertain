@@ -5,6 +5,10 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson
 from settings import SYSTEMS
+from redis import Redis, ConnectionError, ResponseError
+
+MUSIC_KEY = 'music:latest'
+GAMES_KEY = 'games:latest'
 
 def default(request):
     """
@@ -16,7 +20,29 @@ def latest_music(request):
     """
         Returns JSON serialization of the latest music
     """
-    albums = music.parse_music(json=True)
+    r = Redis(db=9)
+    results = None
+    try:
+        # try to get the latest 10 music entries
+        results = r.lrange(MUSIC_KEY, 0, 9)
+        if results:
+            # build results
+            albums = build_results(results)
+            # TODO: check if fetched recently
+    except ResponseError, e:
+        pass
+
+    if not results:
+        albums = music.parse_music(json=True)
+        # store results in a list
+        try:
+            for album in albums:
+                r.push(MUSIC_KEY, '%s|%s|%s'%(album['title'], album['link'], album['date']))
+            r.ltrim(MUSIC_KEY, -10, -1)
+            r.save()
+        except ResponseError, e:
+            pass
+
     return HttpResponse(simplejson.dumps(albums))
 
 def latest_games(request, category='xbox'):
@@ -26,3 +52,15 @@ def latest_games(request, category='xbox'):
     game_results = games.parse_games(category, json=True)
     return HttpResponse(simplejson.dumps(game_results))
 
+def build_results(items):
+    """
+        Returns the results extracted from redis in the form
+        [{'title', 'link', 'date'}]
+    """
+    results = []
+    for item in items:
+        attrs = item.split('|')
+        results.append({'title': attrs[0], 'link': attrs[1], 'date': attrs[2]})
+
+    return results
+    
