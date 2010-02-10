@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson
 from settings import SYSTEMS
 from redis import Redis, ConnectionError, ResponseError
+import datetime
 
 MUSIC_KEY = 'music:latest'
 GAMES_KEY = 'games:latest'
@@ -28,7 +29,11 @@ def latest_music(request):
         if results:
             # build results
             albums = build_results(results)
-            # TODO: check if fetched recently
+
+            # check if fetched recently
+            fetched = datetime.datetime.strptime(albums[0]['fetched'], '%a, %d %b %Y')
+            if fetched + datetime.timedelta(days=1) > datetime.datetime.today():
+                results = None
     except ResponseError, e:
         pass
 
@@ -37,7 +42,7 @@ def latest_music(request):
         # store results in a list
         try:
             for album in albums:
-                r.push(MUSIC_KEY, '%s|%s|%s'%(album['title'], album['link'], album['date']))
+                r.push(MUSIC_KEY, '%s|%s|%s|%s'%(album['title'], album['link'], album['date'], datetime.datetime.today().strftime('%a, %d %b %Y')))
             r.ltrim(MUSIC_KEY, -10, -1)
             r.save()
         except ResponseError, e:
@@ -55,12 +60,12 @@ def latest_games(request, category='xbox'):
 def build_results(items):
     """
         Returns the results extracted from redis in the form
-        [{'title', 'link', 'date'}]
+        [{'title', 'link', 'date', 'fetched'}]
     """
     results = []
     for item in items:
         attrs = item.split('|')
-        results.append({'title': attrs[0], 'link': attrs[1], 'date': attrs[2]})
+        results.append({'title': attrs[0], 'link': attrs[1], 'date': attrs[2], 'fetched': attrs[3]})
 
     return results
     
