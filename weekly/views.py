@@ -21,32 +21,11 @@ def latest_music(request):
     """
         Returns JSON serialization of the latest music
     """
-    r = Redis(db=9)
-    results = None
-    try:
-        # try to get the latest 10 music entries
-        results = r.lrange(MUSIC_KEY, 0, 9)
-        if results:
-            # build results
-            albums = build_results(results)
+    albums = _fetch_from_redis(MUSIC_KEY)
 
-            # check if fetched recently
-            fetched = datetime.datetime.strptime(albums[0]['fetched'], '%a, %d %b %Y')
-            if fetched + datetime.timedelta(days=1) > datetime.datetime.today():
-                results = None
-    except ResponseError, e:
-        pass
-
-    if not results:
+    if not albums:
         albums = music.parse_music(json=True)
-        # store results in a list
-        try:
-            for album in albums:
-                r.push(MUSIC_KEY, '%s|%s|%s|%s'%(album['title'], album['link'], album['date'], datetime.datetime.today().strftime('%a, %d %b %Y')))
-            r.ltrim(MUSIC_KEY, -10, -1)
-            r.save()
-        except ResponseError, e:
-            pass
+        _store_in_redis(albums, MUSIC_KEY)
 
     return HttpResponse(simplejson.dumps(albums))
 
@@ -57,10 +36,50 @@ def latest_games(request, category='xbox'):
     game_results = games.parse_games(category, json=True)
     return HttpResponse(simplejson.dumps(game_results))
 
-def build_results(items):
+def _fetch_from_redis(redis_key):
+    """
+        Fetched the given items from Redis.
+    """
+    r = Redis(db=9)
+    results = None
+    try:
+        # try to get the latest 10 items
+        results = r.lrange(redis_key, 0, 9)
+        if results:
+            # build results
+            items = _build_results(results)
+
+            # check if fetched recently
+            fetched = datetime.datetime.strptime(items[0]['fetched'], '%a, %d %b %Y')
+            if datetime.datetime.today() > fetched + datetime.timedelta(days=1):
+                # force a fetch from the feed is fetched over a day ago
+                results = None
+            else:
+                # else return the items fetched from redis
+                results = items
+    except ResponseError, e:
+        pass
+
+    return results
+
+def _store_in_redis(items, redis_key):
+    """
+        Store the given items in Redis.
+    """
+    r = Redis(db=9)
+    # store results in a list
+    try:
+        for item in items:
+            r.push(redis_key, '%s|%s|%s|%s'%(item['title'], item['link'], item['date'], datetime.datetime.today().strftime('%a, %d %b %Y')))
+        r.ltrim(redis_key, -10, -1)
+        r.save()
+    except ResponseError, e:
+        pass
+
+def _build_results(items):
     """
         Returns the results extracted from redis in the form
-        [{'title', 'link', 'date', 'fetched'}]
+        [{'title', 'link', 'date', 'fetched_date'}]
     """
     results = []
     for item in items:
@@ -68,4 +87,4 @@ def build_results(items):
         results.append({'title': attrs[0], 'link': attrs[1], 'date': attrs[2], 'fetched': attrs[3]})
 
     return results
-    
+

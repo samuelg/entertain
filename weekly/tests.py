@@ -30,26 +30,27 @@ class WeeklyTest(TestCase):
         """
         r = Redis(db=9)
         response = self.client.get(reverse('weekly_music'))
-        self.assertEquals(response.status_code, 200)
         results = r.lrange(MUSIC_KEY, 0, -1)
+
+        self.assertEquals(response.status_code, 200)
         self.assertTrue(results)
         self.assertTrue(response.content)
+        self.assertEquals(results[0].split('|')[3], datetime.datetime.today().strftime('%a, %d %b %Y'))
 
     def test_music_cached(self):
         """
             Tests the music view fetching music that is cached in Redis.
         """
         r = Redis(db=9)
-        two_days_ago = datetime.datetime.today() - datetime.timedelta(days=2)
-        r.push(MUSIC_KEY, '%s|%s|%s|%s'%('title','link','date', two_days_ago.strftime('%a, %d %b %Y'))) 
-
+        two_days_ago = (datetime.datetime.today() - datetime.timedelta(days=2)).strftime('%a, %d %b %Y')
+        r.push(MUSIC_KEY, '%s|%s|%s|%s'%('title','link','date', two_days_ago)) 
         response = self.client.get(reverse('weekly_music'))
-        self.assertEquals(response.status_code, 200)
-        self.assertTrue(response.content)
         results = r.lrange(MUSIC_KEY, 0, -1)
 
+        self.assertEquals(response.status_code, 200)
         self.assertTrue(results)
-        self.assertNotEquals(datetime.datetime.strptime(results[0].split('|')[3], '%a, %d %b %Y'), two_days_ago)
+        self.assertTrue(response.content)
+        self.assertNotEquals(results[0].split('|')[3], two_days_ago)
 
     def test_music(self):
         """
