@@ -9,3 +9,4 @@ DEPENDENCIES
 
   Redis - http://code.google.com/p/redis/
   Feedparser - http://www.feedparser.org/
+  Redis Python client - http://github.com/andymccurdy/redis-py/
