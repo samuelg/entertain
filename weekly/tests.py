@@ -6,6 +6,7 @@ from redis import Redis
 import datetime
 
 MUSIC_KEY = 'music:latest'
+GAMES_KEY = 'games:latest'
 
 class WeeklyTest(TestCase):
     """
@@ -13,7 +14,11 @@ class WeeklyTest(TestCase):
     """
     def setUp(self):
         r = Redis(db=9)
+        systems = ('xbox', 'wii', 'ds', 'ps3', 'pc')
+
         r.delete(MUSIC_KEY)
+        for system in systems:
+            r.delete('%s%s'%(GAMES_KEY, system))
         r.save()
 
     def test_default(self):
@@ -51,6 +56,42 @@ class WeeklyTest(TestCase):
         self.assertTrue(results)
         self.assertTrue(response.content)
         self.assertNotEquals(results[0].split('|')[3], two_days_ago)
+
+    def test_games_notcached(self):
+        """
+            Tests the games view fetching games that are not cached in Redis.
+        """
+        systems = ('xbox', 'wii', 'ds', 'ps3', 'pc')
+
+        r = Redis(db=9)
+        for system in systems:
+            key = '%s%s'%(GAMES_KEY, system)
+            response = self.client.get(reverse('weekly_games', kwargs={'category': system}))
+            results = r.lrange(key, 0, -1)
+
+            self.assertEquals(response.status_code, 200)
+            self.assertTrue(results)
+            self.assertTrue(response.content)
+            self.assertEquals(results[0].split('|')[3], datetime.datetime.today().strftime('%a, %d %b %Y'))
+
+    def test_games_cached(self):
+        """
+            Tests the games view fetching games that are cached in Redis.
+        """
+        systems = ('xbox', 'wii', 'ds', 'ps3', 'pc')
+
+        r = Redis(db=9)
+        for system in systems:
+            key = '%s%s'%(GAMES_KEY, system)
+            two_days_ago = (datetime.datetime.today() - datetime.timedelta(days=2)).strftime('%a, %d %b %Y')
+            r.push(key, '%s|%s|%s|%s'%('title','link','date', two_days_ago)) 
+            response = self.client.get(reverse('weekly_games', kwargs={'category': system}))
+            results = r.lrange(key, 0, -1)
+
+            self.assertEquals(response.status_code, 200)
+            self.assertTrue(results)
+            self.assertTrue(response.content)
+            self.assertNotEquals(results[0].split('|')[3], two_days_ago)
 
     def test_music(self):
         """

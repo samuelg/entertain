@@ -33,7 +33,13 @@ def latest_games(request, category='xbox'):
     """
         Returns JSON serialization of the latest games 
     """
-    game_results = games.parse_games(category, json=True)
+    key = '%s%s'%(GAMES_KEY, category)
+    game_results = _fetch_from_redis(key)
+
+    if not game_results:
+        game_results = games.parse_games(category, json=True)
+        _store_in_redis(game_results, key)
+
     return HttpResponse(simplejson.dumps(game_results))
 
 def _fetch_from_redis(redis_key):
