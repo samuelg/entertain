@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson
+from django.template import RequestContext
 from settings import SYSTEMS
 from redis import Redis, ConnectionError, ResponseError
 import datetime
@@ -15,7 +16,10 @@ def default(request):
     """
         Displays lists of entertainment by medium
     """
-    return render_to_response('weekly/default.html', {'systems': SYSTEMS})
+    return render_to_response('weekly/default.html',
+        {'systems': SYSTEMS},
+        context_instance=RequestContext(request)
+    )
 
 def latest_music(request):
     """

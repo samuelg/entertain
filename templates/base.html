@@ -2,14 +2,26 @@
 <html lang="en">
 <head>
   <title>{% block title %}Entertain{% endblock %}</title>
-  <script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}jquery.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}curvy.js"></script>
+  <link type="text/css" href="{{ MEDIA_URL }}custom.css" rel="stylesheet" />
   {% block javascript %}{% endblock %}
 </head>
 <body>
 
-  <h1><a href="/">Entertain</a></h1>
-  The latest in entertainment.
-  <hr />
+  <div id="header">
+    <div class="row">
+      <div class="logo">
+        <h1><a href="/">Entertain</a></h1>
+      </div>
+      <div class="tagline">
+        The latest in entertainment.
+      </div>
+    </div>
+    <div class="row"></div>
+  </div>
+
+  <hr/>
 
   {% block content %}
   {% endblock %}
