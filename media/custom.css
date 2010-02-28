@@ -1,0 +1,61 @@
+body {
+  font-family: helvetica georgia;
+  margin: 10px;
+  background-color: #FFF;
+  color: #000;
+}
+
+.box a, .box a:hover, .box a:visited {
+  color: #FFFF66;
+}
+
+.box a:visited {
+  text-decoration: line-through;
+}
+
+#header a, #header a:hover, #header a:visited {
+  color: #990000;
+}
+
+#header a:visited {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 40px;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 20px;
+  color: #FFF;
+}
+
+#footer {
+  font-size: 10px;
+}
+
+.row {
+  clear: both;
+}
+
+.left-cell, .logo, .tagline {
+  float: left;
+}
+
+.tagline {
+  margin-top: 22px;
+  margin-left: 10px;
+}
+
+.right-cell {
+  float: right;
+}
+
+.box {
+  background-color: #111;
+  color: #ccc;
+  padding: 10px;
+  margin: 20px;
+  font-size: 11px;
+}

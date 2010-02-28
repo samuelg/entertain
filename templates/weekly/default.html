@@ -21,8 +21,9 @@
       });
 
       new_row += '</ul>';
-      $("#" + medium + cat).append(new_row);
-      $("#" + medium + cat).show("slow");
+      var elem = $('#' + medium + cat);
+      elem.append(new_row);
+      elem.show("slow");
     });
   }
 
@@ -38,40 +39,64 @@
     $.each(systems, function () {
       fetchMedium('games', this);
     });
+
+    // round corner
+    $('.box').corner();
   });
 </script>
 {% endblock %}
 
 {% block content %}
 
-<h2>Music</h2>
+<div class="row">
+  <div class="left-cell box">
+    <h2>Music</h2>
 
-<div id="music" style="display: none;">
+    <div id="music" style="display: none;">
+    </div>
+  </div>
+
+  <div class="left-cell box">
+    <h2>Xbox 360 Games</h2>
+
+    <div id="gamesxbox" style="display: none;">
+    </div>
+  </div>
 </div>
 
-<h2>Xbox 360 Games</h2>
+<div class="row">
+  <div class="left-cell box">
+    <h2>Wii Games</h2>
 
-<div id="gamesxbox" style="display: none;">
+    <div id="gameswii" style="display: none;">
+    </div>
+  </div>
+
+  <div class="left-cell box">
+    <h2>DS Games</h2>
+
+    <div id="gamesds" style="display: none;">
+    </div>
+  </div>
 </div>
 
-<h2>Wii Games</h2>
+<div class="row">
+  <div class="left-cell box">
+    <h2>PS3 Games</h2>
 
-<div id="gameswii" style="display: none;">
+    <div id="gamesps3" style="display: none;">
+    </div>
+  </div>
+
+  <div class="left-cell box">
+    <h2>PC Games</h2>
+
+    <div id="gamespc" style="display: none;">
+    </div>
+  </div>
 </div>
 
-<h2>DS Games</h2>
-
-<div id="gamesds" style="display: none;">
-</div>
-
-<h2>PS3 Games</h2>
-
-<div id="gamesps3" style="display: none;">
-</div>
-
-<h2>PC Games</h2>
-
-<div id="gamespc" style="display: none;">
+<div class="row">
 </div>
 
 {% endblock %}
