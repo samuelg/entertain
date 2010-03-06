@@ -39,9 +39,6 @@
     $.each(systems, function () {
       fetchMedium('games', this);
     });
-
-    // round corner
-    $('.box').corner();
   });
 </script>
 {% endblock %}
@@ -49,14 +46,14 @@
 {% block content %}
 
 <div class="row">
-  <div class="left-cell box">
+  <div class="left-cell box music">
     <h2>Music</h2>
 
     <div id="music" style="display: none;">
     </div>
   </div>
 
-  <div class="left-cell box">
+  <div class="left-cell box games">
     <h2>Xbox 360 Games</h2>
 
     <div id="gamesxbox" style="display: none;">
@@ -65,14 +62,14 @@
 </div>
 
 <div class="row">
-  <div class="left-cell box">
+  <div class="left-cell box games">
     <h2>Wii Games</h2>
 
     <div id="gameswii" style="display: none;">
     </div>
   </div>
 
-  <div class="left-cell box">
+  <div class="left-cell box games">
     <h2>DS Games</h2>
 
     <div id="gamesds" style="display: none;">
@@ -81,14 +78,14 @@
 </div>
 
 <div class="row">
-  <div class="left-cell box">
+  <div class="left-cell box games">
     <h2>PS3 Games</h2>
 
     <div id="gamesps3" style="display: none;">
     </div>
   </div>
 
-  <div class="left-cell box">
+  <div class="left-cell box games">
     <h2>PC Games</h2>
 
     <div id="gamespc" style="display: none;">

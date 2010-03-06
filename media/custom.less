@@ -1,0 +1,84 @@
+// color definitions
+@box-link-text: #ffff66;
+@header-link-text: #990000;
+@games-box-bg: #111;
+@games-box-text: #ccc;
+@music-box-bg: #003366;
+@music-box-text: #ccccff;
+@body-bg: #fff;
+@body-text: #000;
+@h2-text: #fff;
+
+// border radius
+@radius: 5px;
+
+// container definitions
+body {
+  font-family: helvetica georgia;
+  margin: 10px;
+  background-color: @body-bg;
+  color: @body-text;
+}
+
+#header {
+  a {
+    color: @header-link-text;
+    :visited {
+      text-decoration: underline;
+    }
+  }
+}
+
+h1 {
+  font-size: 40px;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 20px;
+  color: @h2-text;
+}
+
+#footer {
+  font-size: 10px;
+}
+
+.row {
+  clear: both;
+}
+
+.left-cell, .logo {
+  float: left;
+}
+
+.tagline {
+  float: left;
+  margin-top: 22px;
+  margin-left: 10px;
+}
+
+.box {
+  padding: 10px;
+  margin: 20px;
+  font-size: 11px;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+  a {
+    color: @box-link-text;
+    :visited {
+      text-decoration: line-through;
+    }
+  }
+}
+
+.music {
+  background-color: @music-box-bg;
+  color: @music-box-text;
+}
+
+.games {
+  background-color: @games-box-bg;
+  color: @games-box-text;
+}
+
