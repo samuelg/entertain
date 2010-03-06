@@ -1,24 +1,32 @@
+// color definitions
+@box-link-text: #ffff66;
+@header-link-text: #990000;
+@games-box-bg: #111;
+@games-box-text: #ccc;
+@music-box-bg: #003366;
+@music-box-text: #ccccff;
+@body-bg: #fff;
+@body-text: #000;
+@h2-text: #fff;
+
+// border radius
+@radius: 5px;
+
+// container definitions
 body {
   font-family: helvetica georgia;
   margin: 10px;
-  background-color: #FFF;
-  color: #000;
+  background-color: @body-bg;
+  color: @body-text;
 }
 
-.box a, .box a:hover, .box a:visited {
-  color: #FFFF66;
-}
-
-.box a:visited {
-  text-decoration: line-through;
-}
-
-#header a, #header a:hover, #header a:visited {
-  color: #990000;
-}
-
-#header a:visited {
-  text-decoration: underline;
+#header {
+  a {
+    color: @header-link-text;
+    :visited {
+      text-decoration: underline;
+    }
+  }
 }
 
 h1 {
@@ -28,7 +36,7 @@ h1 {
 
 h2 {
   font-size: 20px;
-  color: #FFF;
+  color: @h2-text;
 }
 
 #footer {
@@ -39,30 +47,38 @@ h2 {
   clear: both;
 }
 
-.left-cell, .logo, .tagline {
+.left-cell, .logo {
   float: left;
 }
 
 .tagline {
+  float: left;
   margin-top: 22px;
   margin-left: 10px;
 }
 
-.right-cell {
-  float: right;
-}
-
 .box {
-  background-color: #111;
-  color: #ccc;
   padding: 10px;
   margin: 20px;
   font-size: 11px;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+  a {
+    color: @box-link-text;
+    :visited {
+      text-decoration: line-through;
+    }
+  }
 }
 
 .music {
-  background-color: #003366;
-  color: #CCCCFF;
+  background-color: @music-box-bg;
+  color: @music-box-text;
 }
 
+.games {
+  background-color: @games-box-bg;
+  color: @games-box-text;
+}
 
